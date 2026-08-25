@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Estas líneas "import" son automáticas. Traen las herramientas de diseño de JavaFX -->
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<!-- VBox es una "Caja Vertical". Todo lo que pongamos adentro se apilará de arriba hacia abajo. -->
+<!-- fx:controller es VITAL: Le dice a esta vista que su "cerebro" es la clase GradeController. -->
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="591.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.sesion4.GradeController">
+
+    <!-- <children> significa "hijos". Aquí adentro van todos los botones y textos. -->
+    <children>
+
+        <!-- Un Label es un simple texto en pantalla. Aquí es el título principal. -->
+        <Label text="Registro de notas" textFill="#1f55cf">
+            <padding>
+                <Insets bottom="5.0" top="5.0" />
+            </padding>
+            <font>
+                <Font name="Book Antiqua" size="18.0" />
+            </font>
+        </Label>
+
+        <Label text="Nombre Completo:" />
+        <!-- TextField es la cajita para escribir.
+             fx:id="txtName" es el "cable" que usamos en Java para leer lo que escriban aquí. -->
+        <TextField fx:id="txtName" />
+
+        <Label text="Carrera:" />
+        <TextField fx:id="txtMajor" />
+
+        <Label text="Nota:" />
+        <TextField fx:id="txtGrade" />
+
+        <!-- Este Label tiene un fx:id porque en Java vamos a CAMBIAR su texto para que cuente los registros. -->
+        <Label fx:id="lblCount" text="Registro guardados: 0" textFill="#0d100f" />
+
+        <!-- El Botón.
+             onAction="#saveButtonAction" es el gatillo. Al darle clic, ejecuta ese método en el GradeController. -->
+        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveButtonAction" text="Guardar" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+        </Button>
+
+    </children>
+
+    <!-- Esto le da un margen interno (padding) a toda la caja vertical para que no quede pegada a los bordes. -->
+    <padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
+</VBox>
