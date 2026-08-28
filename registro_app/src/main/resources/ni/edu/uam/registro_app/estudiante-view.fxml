@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="356.0" spacing="8.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.registro_app.controllers.EstudianteController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="800.0" spacing="8.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.registro_app.controllers.EstudianteController">
    <children>
       <Label text="Nombres" />
       <TextField fx:id="txtNombres" promptText="Juan Alexander" />
@@ -12,15 +12,12 @@
       <Label text="Apellidos" />
       <TextField fx:id="txtApellidos" promptText="Lopez Herrera" />
 
-      <!-- CAMBIAMOS EL TEXTFIELD POR UN COMBOBOX -->
       <Label text="Carrera" />
-      <ComboBox fx:id="cmbCarrera" prefWidth="336.0" promptText="Seleccione una carrera" />
+      <ComboBox fx:id="cmbCarrera" prefWidth="800.0" promptText="Seleccione una carrera" />
 
-      <!-- AGREGAMOS LOS RADIO BUTTONS PARA LA MODALIDAD -->
       <Label text="Modalidad" />
       <HBox spacing="15.0">
          <children>
-            <!-- El ToggleGroup hace que solo puedas elegir uno a la vez -->
             <RadioButton fx:id="rbPresencial" mnemonicParsing="false" selected="true" text="Presencial">
                <toggleGroup>
                   <ToggleGroup fx:id="grupoModalidad" />
@@ -31,16 +28,28 @@
       </HBox>
 
       <Label text="Fecha De Nacimiento" />
-      <DatePicker fx:id="dpFechaNac" prefWidth="336.0" promptText="Seleccione la fecha" />
+      <DatePicker fx:id="dpFechaNac" prefWidth="800.0" promptText="Seleccione la fecha" />
 
       <CheckBox fx:id="chkTieneBeca" mnemonicParsing="false" text="Tiene Beca" />
 
-      <!-- AGREGAMOS EL LISTVIEW PARA ACTIVIDADES -->
       <Label text="Actividades Extra (Use Ctrl para elegir varias)" />
-      <ListView fx:id="lvActividades" prefHeight="80.0" prefWidth="336.0" />
+      <ListView fx:id="lvActividades" prefHeight="80.0" prefWidth="800.0" />
 
-      <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#guardarOnClick" prefWidth="336.0" text="Agregar Estudiante" />
+      <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#guardarOnClick" prefWidth="800.0" text="Agregar Estudiante" />
       <Label fx:id="lblRegistros" text="Registros Guardados: 0" textFill="#0066cc" />
+
+      <!--TABLA (TableView) -->
+      <TableView fx:id="tvEstudiantes" prefHeight="250.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
+         <columns>
+            <TableColumn fx:id="colNombres" prefWidth="120.0" text="Nombres" />
+            <TableColumn fx:id="colApellidos" prefWidth="120.0" text="Apellidos" />
+            <TableColumn fx:id="colCarrera" prefWidth="150.0" text="Carrera" />
+            <TableColumn fx:id="colModalidad" prefWidth="90.0" text="Modalidad" />
+            <TableColumn fx:id="colFechaNac" prefWidth="100.0" text="Nacimiento" />
+            <TableColumn fx:id="colBeca" prefWidth="70.0" text="¿Beca?" />
+            <TableColumn fx:id="colActividades" prefWidth="130.0" text="Actividades" />
+         </columns>
+      </TableView>
    </children>
    <padding>
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
