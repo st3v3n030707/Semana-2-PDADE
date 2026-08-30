@@ -16,15 +16,18 @@ public class EstudianteController {
     EstudianteDao listado = new EstudianteDao();
 
     // Lista especial para la tabla un ObservableList tiene "superpoderes".
-    //    // Si agregas o quitas un estudiante de esta lista, la tabla en la pantalla
-    //    // se actualiza automáticamente al instante
+    // Si agregas o quitas un estudiante de esta lista, la tabla en la pantalla
+    // se actualiza automáticamente al instante
     private ObservableList<Estudiante> listaEstudiantesTabla = FXCollections.observableArrayList();
 
     @FXML private TextField txtNombres;
     @FXML private TextField txtApellidos;
+    @FXML private TextField txtCarrera;
     @FXML private DatePicker dpFechaNac;
     @FXML private CheckBox chkTieneBeca;
     @FXML private Label lblRegistros;
+
+    // nuevos controles que son de los nuevos botones
     @FXML private ComboBox<String> cmbCarrera;
     @FXML private RadioButton rbPresencial;
     @FXML private RadioButton rbVirtual;
@@ -35,7 +38,7 @@ public class EstudianteController {
     // 2. DECLARACIÓN DE LAS COLUMNAS
     // Nota que usamos genéricos: <Estudiante, String>.
     // osea significa : "Esta columna leerá un objeto Estudiante,
-    // //y extraerá un texto (String)".
+    // y extraerá un texto (String)".
     @FXML private TableView<Estudiante> tvEstudiantes;
     @FXML private TableColumn<Estudiante, String> colNombres;
     @FXML private TableColumn<Estudiante, String> colApellidos;
@@ -45,10 +48,10 @@ public class EstudianteController {
     @FXML private TableColumn<Estudiante, Boolean> colBeca;
     @FXML private TableColumn<Estudiante, List<String>> colActividades;
 
-    @FXML
+    @FXML // arranca al abrir la ventana, es para configurar los controles
     public void initialize() {
-        cmbCarrera.getItems().addAll("Ingeniería en Sistemas", "Medicina", "Administración", "Diseño Gráfico");
-        lvActividades.getItems().addAll("Fútbol", "Voleibol", "Teatro", "Inglés");
+        cmbCarrera.getItems().addAll("Ingeneria en Sistemas", "Diplomacia y Relaciones Internacionales", "Medicina", "Administracion de Empresas", "Diseño Grafico");
+        lvActividades.getItems().addAll("Futbol", "Voleibol", "Teatro", "Ingles", "Jujitsu");
         lvActividades.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         txtNombres.setOnAction(event -> txtApellidos.requestFocus());
@@ -56,7 +59,7 @@ public class EstudianteController {
         cmbCarrera.setOnAction(event -> dpFechaNac.requestFocus());
         dpFechaNac.setOnAction(event -> chkTieneBeca.requestFocus());
 
-        // CONFIGURACIÓN DE LA TABLA: Vinculamos cada columna a su variable en Estudiante.java
+        // RECUPERADO: Configuración de la tabla que faltaba por el conflicto de Git
         colNombres.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colApellidos.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
         colCarrera.setCellValueFactory(new PropertyValueFactory<>("carrera"));
@@ -64,40 +67,43 @@ public class EstudianteController {
         colFechaNac.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
         colBeca.setCellValueFactory(new PropertyValueFactory<>("tieneBeca"));
         colActividades.setCellValueFactory(new PropertyValueFactory<>("actividades"));
-
-        // Le pasamos la lista observable a la tabla
         tvEstudiantes.setItems(listaEstudiantesTabla);
     }
 
     @FXML
-    protected void guardarOnClick(){
-        leerDatos();
-        contarRegistros();
-        limpiarCampos();
+    protected void guardarOnClick() {
+        if (validarCampos()) {
+            leerDatos();
+            contarRegistros();
+            limpiarCampos();
+        }
     }
 
-    private void leerDatos(){
-        String nombre = txtNombres.getText();
-        String apellidos = txtApellidos.getText();
+    private void leerDatos() {
+        // <-- CAMBIADO: Usamos formatearNombrePropio en lugar de .getText() directo
+        String nombre = formatearNombrePropio(txtNombres.getText());
+        String apellidos = formatearNombrePropio(txtApellidos.getText());
+
+        String carrera = cmbCarrera.getValue();
         LocalDate fechaNac = dpFechaNac.getValue();
         Boolean tieneBeca = chkTieneBeca.isSelected();
-        String carrera = cmbCarrera.getValue();
+
         String modalidad = rbPresencial.isSelected() ? "Presencial" : "Virtual";
         List<String> actividades = lvActividades.getSelectionModel().getSelectedItems();
 
         agregarDatos(new Estudiante(nombre, apellidos, carrera, fechaNac, tieneBeca, modalidad, actividades));
     }
 
-    private void agregarDatos(Estudiante estudiante){
+    private void agregarDatos(Estudiante estudiante) {
         listado.agregar(estudiante); // Lo guarda en tu base de datos Dao osea la lista invisible
         listaEstudiantesTabla.add(estudiante); // Lo muestra en la tabla visualmente
     }
 
-    private void contarRegistros(){
+    private void contarRegistros() {
         lblRegistros.setText("Registros almacenados: " + listado.obtenerRegistros().size());
     }
 
-    private void limpiarCampos(){
+    private void limpiarCampos() {
         txtNombres.clear();
         txtApellidos.clear();
         dpFechaNac.setValue(null);
@@ -106,5 +112,86 @@ public class EstudianteController {
         rbPresencial.setSelected(true);
         lvActividades.getSelectionModel().clearSelection();
         txtNombres.requestFocus();
+    }
+
+    private boolean validarCampos() {
+        String regexSoloLetras = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
+
+        if (txtNombres.getText() == null || txtNombres.getText().trim().isEmpty()) {
+            mostrarAlerta("Campo Obligatorio", "Por favor ingresa los nombres del estudiante.");
+            txtNombres.requestFocus();
+            return false;
+        }
+        if (!txtNombres.getText().trim().matches(regexSoloLetras)) {
+            mostrarAlerta("Formato Incorrecto", "Los nombres solo deben contener letras.");
+            txtNombres.requestFocus();
+            return false;
+        }
+
+        if (txtApellidos.getText() == null || txtApellidos.getText().trim().isEmpty()) {
+            mostrarAlerta("Campo Obligatorio", "Por favor ingresa los apellidos del estudiante.");
+            txtApellidos.requestFocus();
+            return false;
+        }
+        if (!txtApellidos.getText().trim().matches(regexSoloLetras)) {
+            mostrarAlerta("Formato Incorrecto", "Los apellidos solo deben contener letras.");
+            txtApellidos.requestFocus();
+            return false;
+        }
+
+        if (cmbCarrera.getValue() == null) {
+            mostrarAlerta("Campo Obligatorio", "Debe seleccionar una carrera universitaria.");
+            cmbCarrera.requestFocus();
+            return false;
+        }
+
+        if (dpFechaNac.getValue() == null) {
+            mostrarAlerta("Campo Obligatorio", "Debe seleccionar una fecha de nacimiento.");
+            dpFechaNac.requestFocus();
+            return false;
+        }
+
+        if (dpFechaNac.getValue().isAfter(LocalDate.now())) {
+            mostrarAlerta("Fecha Inválida", "La fecha de nacimiento no puede ser una fecha futura.");
+            dpFechaNac.requestFocus();
+            return false;
+        }
+
+        int edad = java.time.Period.between(dpFechaNac.getValue(), LocalDate.now()).getYears();
+        if (edad < 15) {
+            mostrarAlerta("Edad Inválida", "El estudiante debe ser mayor de 15 años.");
+            dpFechaNac.requestFocus();
+            return false;
+        }
+
+        if (lvActividades.getSelectionModel().getSelectedItems().isEmpty()) {
+            mostrarAlerta("Campo Obligatorio", "Debe seleccionar al menos una actividad extracurricular.");
+            lvActividades.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    private String formatearNombrePropio(String texto) {
+        if (texto == null || texto.trim().isEmpty()) return "";
+        String[] palabras = texto.trim().toLowerCase().split("\\s+");
+        StringBuilder resultado = new StringBuilder();
+        for (String palabra : palabras) {
+            if (!palabra.isEmpty()) {
+                resultado.append(Character.toUpperCase(palabra.charAt(0)))
+                        .append(palabra.substring(1))
+                        .append(" ");
+            }
+        }
+        return resultado.toString().trim();
+    }
+
+    private void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Validación de Registro");
+        alert.setHeaderText(titulo);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 }
