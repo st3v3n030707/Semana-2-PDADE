@@ -15,7 +15,9 @@ public class EstudianteController {
 
     EstudianteDao listado = new EstudianteDao();
 
-    // Lista especial para la tabla
+    // Lista especial para la tabla un ObservableList tiene "superpoderes".
+    //    // Si agregas o quitas un estudiante de esta lista, la tabla en la pantalla
+    //    // se actualiza automáticamente al instante
     private ObservableList<Estudiante> listaEstudiantesTabla = FXCollections.observableArrayList();
 
     @FXML private TextField txtNombres;
@@ -29,7 +31,11 @@ public class EstudianteController {
     @FXML private ToggleGroup grupoModalidad;
     @FXML private ListView<String> lvActividades;
 
-    // NUEVOS CONTROLES DE LA TABLA
+    // New controladores de la tabla
+    // 2. DECLARACIÓN DE LAS COLUMNAS
+    // Nota que usamos genéricos: <Estudiante, String>.
+    // osea significa : "Esta columna leerá un objeto Estudiante,
+    // //y extraerá un texto (String)".
     @FXML private TableView<Estudiante> tvEstudiantes;
     @FXML private TableColumn<Estudiante, String> colNombres;
     @FXML private TableColumn<Estudiante, String> colApellidos;
@@ -83,7 +89,7 @@ public class EstudianteController {
     }
 
     private void agregarDatos(Estudiante estudiante){
-        listado.agregar(estudiante); // Lo guarda en tu base de datos Dao
+        listado.agregar(estudiante); // Lo guarda en tu base de datos Dao osea la lista invisible
         listaEstudiantesTabla.add(estudiante); // Lo muestra en la tabla visualmente
     }
 

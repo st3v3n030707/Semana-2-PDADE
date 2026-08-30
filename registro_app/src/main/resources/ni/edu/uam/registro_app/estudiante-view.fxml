@@ -38,9 +38,10 @@
       <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#guardarOnClick" prefWidth="800.0" text="Agregar Estudiante" />
       <Label fx:id="lblRegistros" text="Registros Guardados: 0" textFill="#0066cc" />
 
-      <!--TABLA (TableView) -->
+      <!-- TableView es el contenedor principal de la tabla -->
       <TableView fx:id="tvEstudiantes" prefHeight="250.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
          <columns>
+            <!-- Cada TableColumn es una columna. El 'text' es el título que ve el usuario -->
             <TableColumn fx:id="colNombres" prefWidth="120.0" text="Nombres" />
             <TableColumn fx:id="colApellidos" prefWidth="120.0" text="Apellidos" />
             <TableColumn fx:id="colCarrera" prefWidth="150.0" text="Carrera" />
