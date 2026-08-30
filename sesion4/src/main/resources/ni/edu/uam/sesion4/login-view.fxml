@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<!-- Aquí ya conectamos esta vista con el nuevo LoginController que creamos. -->
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="5.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.sesion4.LoginController">
+    <padding>
+        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+    </padding>
+    <children>
+
+        <!-- Título de la pantalla -->
+        <Label text="REGISTRO DE NOTAS" textFill="#0099ab">
+            <font>
+                <Font name="Book Antiqua Bold Italic" size="26.0" />
+            </font>
+        </Label>
+
+        <Label text="Usuario">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Label>
+
+        <!-- Cajita para el usuario. promptText es el texto gris de ayuda que desaparece al escribir. -->
+        <TextField fx:id="txtUser" promptText="Ingrese el usuario" />
+
+        <Label text="Contraseña">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Label>
+
+        <!-- PasswordField es especial: oculta lo que escribes con puntitos (••••).
+             Le pusimos su fx:id para poder leer la contraseña desde el LoginController. -->
+        <PasswordField fx:id="txtPassword" promptText="Ingresa la contraseña" />
+
+        <!-- Botón de entrar.
+             onAction="#loginAction" avisa al controlador que verifique la contraseña al dar clic. -->
+        <Button fx:id="btnEnter" mnemonicParsing="false" onAction="#loginAction" text="Entrar">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Button>
+
+        <!-- El mensaje de error.
+             Tiene visible="false" para que inicie invisible. Solo lo encendemos desde Java si la contraseña es incorrecta. -->
+        <Label fx:id="lblError" text="ERROR: Usuario o contraseña invalida" textFill="RED" visible="false" />
+
+    </children>
+</VBox>
