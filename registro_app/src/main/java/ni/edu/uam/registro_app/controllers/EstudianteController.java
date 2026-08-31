@@ -89,7 +89,7 @@ public class EstudianteController {
         Boolean tieneBeca = chkTieneBeca.isSelected();
 
         String modalidad = rbPresencial.isSelected() ? "Presencial" : "Virtual";
-        List<String> actividades = lvActividades.getSelectionModel().getSelectedItems();
+        List<String> actividades = new java.util.ArrayList<>(lvActividades.getSelectionModel().getSelectedItems());
 
         agregarDatos(new Estudiante(nombre, apellidos, carrera, fechaNac, tieneBeca, modalidad, actividades));
     }
